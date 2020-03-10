@@ -10,6 +10,7 @@ https://www.pongoresume.com/blogPosts/371/brag-your-way-to-a-new-job-or-pay-rais
 
 ### Usage
 brag will create `~/.bragsheet.txt` for you if it doesn't already exist.
+This is where all of your brags will get recorded.
 ```
 brag thing i did
 #=> 
