@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'date'
 
 class Brag
     DEFAULT_FILE = "#{ENV["HOME"]}/.bragsheet.txt".freeze
@@ -7,8 +8,7 @@ class Brag
         if args.empty?
             puts help_page
         elsif args[0] == "sheet"
-            read_file(DEFAULT_FILE)
-            # print the list
+            sheet(args)
         else
             brag_text = args.join(" ")
             add_to_file(DEFAULT_FILE, brag_text)
@@ -18,7 +18,7 @@ class Brag
 
     def self.add_to_file(file, text)
         open(file, 'a+') do |file|
-          file.puts "#{Time.now.strftime("%m-%d-%y %H:%M")} - #{text}"
+          file.puts "#{Date.today} - #{text}"
         end
     end
 
@@ -35,6 +35,29 @@ class Brag
         # if the file doesn't exist
         # if the file is empty
        !File.exists?(file) || File.zero?(file)
+    end
+
+    def self.sheet(args)
+        case args[1]
+        when "weekly"
+            brags = []
+            open(DEFAULT_FILE, 'a+').each do |line|
+                # turn the timestamp into a date object
+                brag_date = Date.parse(line.split(" ").first)
+                if brag_date >= (Date.today - 6) # get the last week's brags (7 is inclusive friday - friday, we want monday-friday )
+                    brags << line
+                end
+            end
+
+            if brags.any?
+                puts "here's your brags for the week:"
+                puts brags
+            else
+                puts "no brags yet :("
+            end
+        else
+            read_file(DEFAULT_FILE)
+        end
     end
 
     def self.help_page
