@@ -5,7 +5,7 @@ class Brag
 
     def self.parse(args)
         if args.empty?
-            return # don't do anything
+            puts help_page
         elsif args[0] == "sheet"
             read_file(DEFAULT_FILE)
             # print the list
@@ -35,5 +35,15 @@ class Brag
         # if the file doesn't exist
         # if the file is empty
        !File.exists?(file) || File.zero?(file)
+    end
+
+    def self.help_page
+        "Usage: brag [ACCOMPLISHMENT]
+Keep a list of accomplishments.\n
+Pass in 'sheet' (ie: `brag sheet`)
+to list your accomplishments.\n
+Examples:
+brag finished the mvp
+brag sheet\n"
     end
 end
